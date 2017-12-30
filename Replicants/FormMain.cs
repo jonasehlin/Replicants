@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
 using System.Diagnostics;
-using Microsoft.VisualBasic.FileIO;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Replicants
 {
