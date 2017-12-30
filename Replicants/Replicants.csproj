@@ -67,6 +67,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplicantEventArgs.cs" />
+    <Compile Include="ReplicantFinder.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ReplicantFinderArgs.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>

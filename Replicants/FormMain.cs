@@ -9,7 +9,7 @@ namespace Replicants
 {
 	public partial class FormMain : Form
 	{
-		internal FileItemMap Replicants;
+		ReplicantFinder _replicantFinder;
 
 		int _foundReplicants = 0;
 		long? _minSize, _maxSize;
@@ -17,6 +17,11 @@ namespace Replicants
 		public FormMain()
 		{
 			InitializeComponent();
+			_replicantFinder = new ReplicantFinder();
+			_replicantFinder.DoWork += ReplicantFinder_DoWork;
+			_replicantFinder.ProgressChanged += ReplicantFinder_ProgressChanged;
+			_replicantFinder.RunWorkerCompleted += ReplicantFinder_RunWorkerCompleted;
+			components.Add(_replicantFinder);
 		}
 
 		private void FormMain_Load(object sender, EventArgs e)
@@ -49,6 +54,7 @@ namespace Replicants
 			long value;
 			_minSize = long.TryParse(_textBoxMinSize.Text, out value) ? (long?)value : null;
 			_maxSize = long.TryParse(_textBoxMaxSize.Text, out value) ? (long?)value : null;
+			_replicantFinder.Replicants = _checkBoxNames.Checked ? new FileItemMap(new FileItem.NameComparer()) : new FileItemMap();
 			_replicantFinder.RunWorkerAsync(new ReplicantFinderArgs(_comboBoxDir.Text, _comboBoxSearchPattern.Text, _checkBoxNames.Checked));
 		}
 
@@ -60,8 +66,6 @@ namespace Replicants
 			_treeViewReplicants.BeginUpdate();
 			_treeViewReplicants.Nodes.Clear();
 			_treeViewReplicants.EndUpdate();
-
-			Replicants = _checkBoxNames.Checked ? new FileItemMap(new FileItem.NameComparer()) : new FileItemMap();
 		}
 
 		private void ReplicantFinder_DoWork(object sender, DoWorkEventArgs e)
@@ -87,7 +91,7 @@ namespace Replicants
 							continue;
 
 						var fileItem = new FileItem(fileInfo);
-						var source = Replicants.Add(fileItem);
+						var source = _replicantFinder.Replicants.Add(fileItem);
 						if (source != null)
 							_replicantFinder.ReportProgress(0, new ReplicantEventArgs(source, fileItem));
 

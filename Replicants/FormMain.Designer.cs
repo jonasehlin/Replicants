@@ -52,7 +52,6 @@
 			this._separator2toolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
 			this._clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._folderBrowserDialogAddDir = new System.Windows.Forms.FolderBrowserDialog();
-			this._replicantFinder = new System.ComponentModel.BackgroundWorker();
 			this._timerSaveSettings = new System.Windows.Forms.Timer(this.components);
 			this.panel1.SuspendLayout();
 			this._contextMenuStripReplicant.SuspendLayout();
@@ -73,7 +72,7 @@
 			this.panel1.Controls.Add(this._buttonScan);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
-			this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.panel1.Margin = new System.Windows.Forms.Padding(2);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(641, 109);
 			this.panel1.TabIndex = 0;
@@ -82,7 +81,7 @@
 			// 
 			this._checkBoxNames.AutoSize = true;
 			this._checkBoxNames.Location = new System.Drawing.Point(247, 76);
-			this._checkBoxNames.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._checkBoxNames.Margin = new System.Windows.Forms.Padding(2);
 			this._checkBoxNames.Name = "_checkBoxNames";
 			this._checkBoxNames.Size = new System.Drawing.Size(81, 17);
 			this._checkBoxNames.TabIndex = 5;
@@ -92,7 +91,7 @@
 			// _textBoxMaxSize
 			// 
 			this._textBoxMaxSize.Location = new System.Drawing.Point(183, 76);
-			this._textBoxMaxSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._textBoxMaxSize.Margin = new System.Windows.Forms.Padding(2);
 			this._textBoxMaxSize.Name = "_textBoxMaxSize";
 			this._textBoxMaxSize.Size = new System.Drawing.Size(60, 20);
 			this._textBoxMaxSize.TabIndex = 4;
@@ -103,7 +102,7 @@
 			// _textBoxMinSize
 			// 
 			this._textBoxMinSize.Location = new System.Drawing.Point(113, 76);
-			this._textBoxMinSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._textBoxMinSize.Margin = new System.Windows.Forms.Padding(2);
 			this._textBoxMinSize.Name = "_textBoxMinSize";
 			this._textBoxMinSize.Size = new System.Drawing.Size(60, 20);
 			this._textBoxMinSize.TabIndex = 3;
@@ -137,7 +136,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._comboBoxDir.FormattingEnabled = true;
 			this._comboBoxDir.Location = new System.Drawing.Point(11, 28);
-			this._comboBoxDir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._comboBoxDir.Margin = new System.Windows.Forms.Padding(2);
 			this._comboBoxDir.Name = "_comboBoxDir";
 			this._comboBoxDir.Size = new System.Drawing.Size(556, 21);
 			this._comboBoxDir.TabIndex = 0;
@@ -161,7 +160,7 @@
             "*.mp3",
             "*.flac"});
 			this._comboBoxSearchPattern.Location = new System.Drawing.Point(11, 76);
-			this._comboBoxSearchPattern.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._comboBoxSearchPattern.Margin = new System.Windows.Forms.Padding(2);
 			this._comboBoxSearchPattern.Name = "_comboBoxSearchPattern";
 			this._comboBoxSearchPattern.Size = new System.Drawing.Size(92, 21);
 			this._comboBoxSearchPattern.TabIndex = 2;
@@ -180,7 +179,7 @@
 			// 
 			this._buttonBrowseDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._buttonBrowseDir.Location = new System.Drawing.Point(570, 27);
-			this._buttonBrowseDir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._buttonBrowseDir.Margin = new System.Windows.Forms.Padding(2);
 			this._buttonBrowseDir.Name = "_buttonBrowseDir";
 			this._buttonBrowseDir.Size = new System.Drawing.Size(62, 22);
 			this._buttonBrowseDir.TabIndex = 1;
@@ -192,7 +191,7 @@
 			// 
 			this._buttonScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._buttonScan.Location = new System.Drawing.Point(570, 74);
-			this._buttonScan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._buttonScan.Margin = new System.Windows.Forms.Padding(2);
 			this._buttonScan.Name = "_buttonScan";
 			this._buttonScan.Size = new System.Drawing.Size(62, 22);
 			this._buttonScan.TabIndex = 6;
@@ -205,7 +204,7 @@
 			this._treeViewReplicants.ContextMenuStrip = this._contextMenuStripReplicant;
 			this._treeViewReplicants.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._treeViewReplicants.Location = new System.Drawing.Point(0, 109);
-			this._treeViewReplicants.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._treeViewReplicants.Margin = new System.Windows.Forms.Padding(2);
 			this._treeViewReplicants.Name = "_treeViewReplicants";
 			this._treeViewReplicants.Size = new System.Drawing.Size(641, 378);
 			this._treeViewReplicants.TabIndex = 0;
@@ -282,14 +281,6 @@
 			// 
 			this._folderBrowserDialogAddDir.Description = "Select the folder that contains files to search for replicants.";
 			// 
-			// _replicantFinder
-			// 
-			this._replicantFinder.WorkerReportsProgress = true;
-			this._replicantFinder.WorkerSupportsCancellation = true;
-			this._replicantFinder.DoWork += new System.ComponentModel.DoWorkEventHandler(this.ReplicantFinder_DoWork);
-			this._replicantFinder.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.ReplicantFinder_ProgressChanged);
-			this._replicantFinder.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ReplicantFinder_RunWorkerCompleted);
-			// 
 			// _timerSaveSettings
 			// 
 			this._timerSaveSettings.Interval = 2000;
@@ -302,7 +293,7 @@
 			this.ClientSize = new System.Drawing.Size(641, 487);
 			this.Controls.Add(this._treeViewReplicants);
 			this.Controls.Add(this.panel1);
-			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.Margin = new System.Windows.Forms.Padding(2);
 			this.MinimumSize = new System.Drawing.Size(420, 39);
 			this.Name = "FormMain";
 			this.Text = "File Replicants";
@@ -321,7 +312,6 @@
 		private System.Windows.Forms.TreeView _treeViewReplicants;
 		private System.Windows.Forms.Button _buttonScan;
 		private System.Windows.Forms.FolderBrowserDialog _folderBrowserDialogAddDir;
-		private System.ComponentModel.BackgroundWorker _replicantFinder;
 		private System.Windows.Forms.ComboBox _comboBoxSearchPattern;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ContextMenuStrip _contextMenuStripReplicant;
