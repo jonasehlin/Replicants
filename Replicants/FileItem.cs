@@ -62,9 +62,14 @@ namespace Replicants
 					byte[] bytes = new byte[1024];
 					using (var fs = _fileInfo.OpenRead())
 						readBytes = fs.Read(bytes, 0, bytes.Length);
-					
-					_firstKiloByte = new byte[readBytes];
-					Array.Copy(bytes, _firstKiloByte, readBytes);
+
+					if (readBytes < bytes.Length)
+					{
+						_firstKiloByte = new byte[readBytes];
+						Array.Copy(bytes, _firstKiloByte, readBytes);
+					}
+					else
+						_firstKiloByte = bytes;
 				}
 				return _firstKiloByte;
 			}
@@ -87,7 +92,7 @@ namespace Replicants
 
 			if (_fileInfo.Exists == false || fileItem._fileInfo.Exists == false)
 				return false;
-			
+
 			if (_fileInfo.Length != fileItem._fileInfo.Length)
 				return false;
 

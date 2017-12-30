@@ -30,6 +30,7 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this._checkBoxNames = new System.Windows.Forms.CheckBox();
 			this._textBoxMaxSize = new System.Windows.Forms.TextBox();
 			this._textBoxMinSize = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
@@ -53,7 +54,6 @@
 			this._folderBrowserDialogAddDir = new System.Windows.Forms.FolderBrowserDialog();
 			this._replicantFinder = new System.ComponentModel.BackgroundWorker();
 			this._timerSaveSettings = new System.Windows.Forms.Timer(this.components);
-			this._checkBoxNames = new System.Windows.Forms.CheckBox();
 			this.panel1.SuspendLayout();
 			this._contextMenuStripReplicant.SuspendLayout();
 			this.SuspendLayout();
@@ -73,15 +73,28 @@
 			this.panel1.Controls.Add(this._buttonScan);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel1.Location = new System.Drawing.Point(0, 0);
+			this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(537, 134);
+			this.panel1.Size = new System.Drawing.Size(641, 109);
 			this.panel1.TabIndex = 0;
+			// 
+			// _checkBoxNames
+			// 
+			this._checkBoxNames.AutoSize = true;
+			this._checkBoxNames.Location = new System.Drawing.Point(247, 76);
+			this._checkBoxNames.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this._checkBoxNames.Name = "_checkBoxNames";
+			this._checkBoxNames.Size = new System.Drawing.Size(81, 17);
+			this._checkBoxNames.TabIndex = 5;
+			this._checkBoxNames.Text = "Only names";
+			this._checkBoxNames.UseVisualStyleBackColor = true;
 			// 
 			// _textBoxMaxSize
 			// 
-			this._textBoxMaxSize.Location = new System.Drawing.Point(244, 93);
+			this._textBoxMaxSize.Location = new System.Drawing.Point(183, 76);
+			this._textBoxMaxSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this._textBoxMaxSize.Name = "_textBoxMaxSize";
-			this._textBoxMaxSize.Size = new System.Drawing.Size(79, 22);
+			this._textBoxMaxSize.Size = new System.Drawing.Size(60, 20);
 			this._textBoxMaxSize.TabIndex = 4;
 			this._textBoxMaxSize.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnlyNumbers_KeyDown);
 			this._textBoxMaxSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumbers_KeyPress);
@@ -89,9 +102,10 @@
 			// 
 			// _textBoxMinSize
 			// 
-			this._textBoxMinSize.Location = new System.Drawing.Point(151, 93);
+			this._textBoxMinSize.Location = new System.Drawing.Point(113, 76);
+			this._textBoxMinSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this._textBoxMinSize.Name = "_textBoxMinSize";
-			this._textBoxMinSize.Size = new System.Drawing.Size(79, 22);
+			this._textBoxMinSize.Size = new System.Drawing.Size(60, 20);
 			this._textBoxMinSize.TabIndex = 3;
 			this._textBoxMinSize.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnlyNumbers_KeyDown);
 			this._textBoxMinSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumbers_KeyPress);
@@ -100,18 +114,20 @@
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(241, 73);
+			this.label4.Location = new System.Drawing.Point(181, 59);
+			this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(62, 17);
+			this.label4.Size = new System.Drawing.Size(48, 13);
 			this.label4.TabIndex = 5;
 			this.label4.Text = "Max size";
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(148, 73);
+			this.label3.Location = new System.Drawing.Point(111, 59);
+			this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(59, 17);
+			this.label3.Size = new System.Drawing.Size(45, 13);
 			this.label3.TabIndex = 5;
 			this.label3.Text = "Min size";
 			// 
@@ -120,17 +136,19 @@
 			this._comboBoxDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._comboBoxDir.FormattingEnabled = true;
-			this._comboBoxDir.Location = new System.Drawing.Point(15, 35);
+			this._comboBoxDir.Location = new System.Drawing.Point(11, 28);
+			this._comboBoxDir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this._comboBoxDir.Name = "_comboBoxDir";
-			this._comboBoxDir.Size = new System.Drawing.Size(422, 24);
+			this._comboBoxDir.Size = new System.Drawing.Size(556, 21);
 			this._comboBoxDir.TabIndex = 0;
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 15);
+			this.label2.Location = new System.Drawing.Point(9, 12);
+			this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(65, 17);
+			this.label2.Size = new System.Drawing.Size(49, 13);
 			this.label2.TabIndex = 3;
 			this.label2.Text = "Directory";
 			// 
@@ -142,26 +160,29 @@
             "*.jpg",
             "*.mp3",
             "*.flac"});
-			this._comboBoxSearchPattern.Location = new System.Drawing.Point(15, 93);
+			this._comboBoxSearchPattern.Location = new System.Drawing.Point(11, 76);
+			this._comboBoxSearchPattern.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this._comboBoxSearchPattern.Name = "_comboBoxSearchPattern";
-			this._comboBoxSearchPattern.Size = new System.Drawing.Size(121, 24);
+			this._comboBoxSearchPattern.Size = new System.Drawing.Size(92, 21);
 			this._comboBoxSearchPattern.TabIndex = 2;
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 73);
+			this.label1.Location = new System.Drawing.Point(9, 59);
+			this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(102, 17);
+			this.label1.Size = new System.Drawing.Size(77, 13);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Search pattern";
 			// 
 			// _buttonBrowseDir
 			// 
 			this._buttonBrowseDir.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this._buttonBrowseDir.Location = new System.Drawing.Point(443, 33);
+			this._buttonBrowseDir.Location = new System.Drawing.Point(570, 27);
+			this._buttonBrowseDir.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this._buttonBrowseDir.Name = "_buttonBrowseDir";
-			this._buttonBrowseDir.Size = new System.Drawing.Size(82, 27);
+			this._buttonBrowseDir.Size = new System.Drawing.Size(62, 22);
 			this._buttonBrowseDir.TabIndex = 1;
 			this._buttonBrowseDir.Text = "Browse...";
 			this._buttonBrowseDir.UseVisualStyleBackColor = true;
@@ -170,10 +191,11 @@
 			// _buttonScan
 			// 
 			this._buttonScan.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this._buttonScan.Location = new System.Drawing.Point(443, 91);
+			this._buttonScan.Location = new System.Drawing.Point(570, 74);
+			this._buttonScan.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this._buttonScan.Name = "_buttonScan";
-			this._buttonScan.Size = new System.Drawing.Size(82, 27);
-			this._buttonScan.TabIndex = 5;
+			this._buttonScan.Size = new System.Drawing.Size(62, 22);
+			this._buttonScan.TabIndex = 6;
 			this._buttonScan.Text = "Scan";
 			this._buttonScan.UseVisualStyleBackColor = true;
 			this._buttonScan.Click += new System.EventHandler(this.ButtonAddDir_Click);
@@ -182,10 +204,11 @@
 			// 
 			this._treeViewReplicants.ContextMenuStrip = this._contextMenuStripReplicant;
 			this._treeViewReplicants.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._treeViewReplicants.Location = new System.Drawing.Point(0, 134);
+			this._treeViewReplicants.Location = new System.Drawing.Point(0, 109);
+			this._treeViewReplicants.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
 			this._treeViewReplicants.Name = "_treeViewReplicants";
-			this._treeViewReplicants.Size = new System.Drawing.Size(537, 333);
-			this._treeViewReplicants.TabIndex = 1;
+			this._treeViewReplicants.Size = new System.Drawing.Size(641, 378);
+			this._treeViewReplicants.TabIndex = 0;
 			this._treeViewReplicants.DoubleClick += new System.EventHandler(this.TreeViewReplicants_DoubleClick);
 			this._treeViewReplicants.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TreeViewReplicants_KeyDown);
 			// 
@@ -201,57 +224,57 @@
             this._separator2toolStripMenuItem,
             this._clearToolStripMenuItem});
 			this._contextMenuStripReplicant.Name = "_contextMenuStripReplicant";
-			this._contextMenuStripReplicant.Size = new System.Drawing.Size(233, 160);
+			this._contextMenuStripReplicant.Size = new System.Drawing.Size(198, 148);
 			// 
 			// _openToolStripMenuItem
 			// 
 			this._openToolStripMenuItem.Name = "_openToolStripMenuItem";
-			this._openToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
+			this._openToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
 			this._openToolStripMenuItem.Text = "Open";
 			this._openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
 			// 
 			// _openContainingFolderToolStripMenuItem
 			// 
 			this._openContainingFolderToolStripMenuItem.Name = "_openContainingFolderToolStripMenuItem";
-			this._openContainingFolderToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
+			this._openContainingFolderToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
 			this._openContainingFolderToolStripMenuItem.Text = "Open containing folder";
 			this._openContainingFolderToolStripMenuItem.Click += new System.EventHandler(this.OpenContainingFolderToolStripMenuItem_Click);
 			// 
 			// _deleteToolStripMenuItem
 			// 
 			this._deleteToolStripMenuItem.Name = "_deleteToolStripMenuItem";
-			this._deleteToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
+			this._deleteToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
 			this._deleteToolStripMenuItem.Text = "Delete";
 			this._deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
 			// 
 			// _separator1toolStripMenuItem
 			// 
 			this._separator1toolStripMenuItem.Name = "_separator1toolStripMenuItem";
-			this._separator1toolStripMenuItem.Size = new System.Drawing.Size(229, 6);
+			this._separator1toolStripMenuItem.Size = new System.Drawing.Size(194, 6);
 			// 
 			// _expandAllToolStripMenuItem
 			// 
 			this._expandAllToolStripMenuItem.Name = "_expandAllToolStripMenuItem";
-			this._expandAllToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
+			this._expandAllToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
 			this._expandAllToolStripMenuItem.Text = "Expand all";
 			this._expandAllToolStripMenuItem.Click += new System.EventHandler(this.ExpandAllToolStripMenuItem_Click);
 			// 
 			// _collapseAllToolStripMenuItem
 			// 
 			this._collapseAllToolStripMenuItem.Name = "_collapseAllToolStripMenuItem";
-			this._collapseAllToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
+			this._collapseAllToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
 			this._collapseAllToolStripMenuItem.Text = "Collapse all";
 			this._collapseAllToolStripMenuItem.Click += new System.EventHandler(this.CollapseAllToolStripMenuItem_Click);
 			// 
 			// _separator2toolStripMenuItem
 			// 
 			this._separator2toolStripMenuItem.Name = "_separator2toolStripMenuItem";
-			this._separator2toolStripMenuItem.Size = new System.Drawing.Size(229, 6);
+			this._separator2toolStripMenuItem.Size = new System.Drawing.Size(194, 6);
 			// 
 			// _clearToolStripMenuItem
 			// 
 			this._clearToolStripMenuItem.Name = "_clearToolStripMenuItem";
-			this._clearToolStripMenuItem.Size = new System.Drawing.Size(232, 24);
+			this._clearToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
 			this._clearToolStripMenuItem.Text = "Clear";
 			this._clearToolStripMenuItem.Click += new System.EventHandler(this.ButtonClear_Click);
 			// 
@@ -272,24 +295,15 @@
 			this._timerSaveSettings.Interval = 2000;
 			this._timerSaveSettings.Tick += new System.EventHandler(this.TimerSaveSettings_Tick);
 			// 
-			// _checkBoxNames
-			// 
-			this._checkBoxNames.AutoSize = true;
-			this._checkBoxNames.Location = new System.Drawing.Point(329, 93);
-			this._checkBoxNames.Name = "_checkBoxNames";
-			this._checkBoxNames.Size = new System.Drawing.Size(105, 21);
-			this._checkBoxNames.TabIndex = 6;
-			this._checkBoxNames.Text = "Only names";
-			this._checkBoxNames.UseVisualStyleBackColor = true;
-			// 
 			// FormMain
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(537, 467);
+			this.ClientSize = new System.Drawing.Size(641, 487);
 			this.Controls.Add(this._treeViewReplicants);
 			this.Controls.Add(this.panel1);
-			this.MinimumSize = new System.Drawing.Size(555, 0);
+			this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+			this.MinimumSize = new System.Drawing.Size(420, 39);
 			this.Name = "FormMain";
 			this.Text = "File Replicants";
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
