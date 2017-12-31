@@ -53,6 +53,7 @@
 			this._clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._folderBrowserDialogAddDir = new System.Windows.Forms.FolderBrowserDialog();
 			this._timerSaveSettings = new System.Windows.Forms.Timer(this.components);
+			this._replicantFinder = new Replicants.ReplicantFinder();
 			this.panel1.SuspendLayout();
 			this._contextMenuStripReplicant.SuspendLayout();
 			this.SuspendLayout();
@@ -286,6 +287,13 @@
 			this._timerSaveSettings.Interval = 2000;
 			this._timerSaveSettings.Tick += new System.EventHandler(this.TimerSaveSettings_Tick);
 			// 
+			// _replicantFinder
+			// 
+			this._replicantFinder.WorkerReportsProgress = true;
+			this._replicantFinder.WorkerSupportsCancellation = true;
+			this._replicantFinder.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.ReplicantFinder_ProgressChanged);
+			this._replicantFinder.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.ReplicantFinder_RunWorkerCompleted);
+			// 
 			// FormMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -332,6 +340,7 @@
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.ToolStripMenuItem _openContainingFolderToolStripMenuItem;
 		private System.Windows.Forms.CheckBox _checkBoxNames;
+		private ReplicantFinder _replicantFinder;
 	}
 }
 

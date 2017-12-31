@@ -2,26 +2,49 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 
 namespace Replicants
 {
 	public partial class FormMain : Form
 	{
-		ReplicantFinder _replicantFinder;
-
 		int _foundReplicants = 0;
-		long? _minSize, _maxSize;
+		bool _allowedDigitKey;
 
 		public FormMain()
 		{
 			InitializeComponent();
-			_replicantFinder = new ReplicantFinder();
-			_replicantFinder.DoWork += ReplicantFinder_DoWork;
-			_replicantFinder.ProgressChanged += ReplicantFinder_ProgressChanged;
-			_replicantFinder.RunWorkerCompleted += ReplicantFinder_RunWorkerCompleted;
 			components.Add(_replicantFinder);
+		}
+
+		private void AddScanDirectory(string dir)
+		{
+			int index = Properties.Settings.Default.ScanDirectories.IndexOf(dir);
+			if (index >= 0)
+				Properties.Settings.Default.ScanDirectories.RemoveAt(index);
+
+			Properties.Settings.Default.ScanDirectories.Insert(0, dir);
+			while (Properties.Settings.Default.ScanDirectories.Count > 10)
+				Properties.Settings.Default.ScanDirectories.RemoveAt(10);
+
+			SaveSettings();
+		}
+
+		private TreeNode GetSourceTreeNode(FileItem fileItem)
+		{
+			foreach (TreeNode treeNode in _treeViewReplicants.Nodes)
+			{
+				if (ReferenceEquals(treeNode.Tag, fileItem))
+					return treeNode;
+			}
+
+			return null;
+		}
+
+		private void SaveSettings()
+		{
+			_timerSaveSettings.Stop();
+			_timerSaveSettings.Start();
 		}
 
 		private void FormMain_Load(object sender, EventArgs e)
@@ -52,8 +75,8 @@ namespace Replicants
 			_buttonScan.Text = "Stop";
 			Cursor = Cursors.AppStarting;
 			long value;
-			_minSize = long.TryParse(_textBoxMinSize.Text, out value) ? (long?)value : null;
-			_maxSize = long.TryParse(_textBoxMaxSize.Text, out value) ? (long?)value : null;
+			_replicantFinder._minSize = long.TryParse(_textBoxMinSize.Text, out value) ? (long?)value : null;
+			_replicantFinder._maxSize = long.TryParse(_textBoxMaxSize.Text, out value) ? (long?)value : null;
 			_replicantFinder.Replicants = _checkBoxNames.Checked ? new FileItemMap(new FileItem.NameComparer()) : new FileItemMap();
 			_replicantFinder.RunWorkerAsync(new ReplicantFinderArgs(_comboBoxDir.Text, _comboBoxSearchPattern.Text, _checkBoxNames.Checked));
 		}
@@ -66,51 +89,6 @@ namespace Replicants
 			_treeViewReplicants.BeginUpdate();
 			_treeViewReplicants.Nodes.Clear();
 			_treeViewReplicants.EndUpdate();
-		}
-
-		private void ReplicantFinder_DoWork(object sender, DoWorkEventArgs e)
-		{
-			FindReplicant((ReplicantFinderArgs)e.Argument);
-		}
-
-		private void FindReplicant(ReplicantFinderArgs args)
-		{
-			if (_replicantFinder.CancellationPending)
-				return;
-
-			try
-			{
-				foreach (var filePath in Directory.GetFiles(args.Path, args.SearchPattern))
-				{
-					try
-					{
-						var fileInfo = new FileInfo(filePath);
-						if (_minSize.HasValue && fileInfo.Length < _minSize.Value)
-							continue;
-						if (_maxSize.HasValue && fileInfo.Length > _maxSize.Value)
-							continue;
-
-						var fileItem = new FileItem(fileInfo);
-						var source = _replicantFinder.Replicants.Add(fileItem);
-						if (source != null)
-							_replicantFinder.ReportProgress(0, new ReplicantEventArgs(source, fileItem));
-
-						if (_replicantFinder.CancellationPending)
-							return;
-					}
-					catch (Exception ex)
-					{
-						Trace.WriteLine(ex.Message);
-					}
-				}
-
-				foreach (var subDirPath in Directory.GetDirectories(args.Path))
-					FindReplicant(args.Clone(subDirPath));
-			}
-			catch (Exception ex)
-			{
-				Trace.WriteLine(ex.Message);
-			}
 		}
 
 		private void ReplicantFinder_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -150,17 +128,6 @@ namespace Replicants
 			_foundReplicants++;
 		}
 
-		private TreeNode GetSourceTreeNode(FileItem fileItem)
-		{
-			foreach (TreeNode treeNode in _treeViewReplicants.Nodes)
-			{
-				if (ReferenceEquals(treeNode.Tag, fileItem))
-					return treeNode;
-			}
-
-			return null;
-		}
-
 		private void ReplicantFinder_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			_buttonScan.Text = "Scan directory";
@@ -198,25 +165,6 @@ namespace Replicants
 			_comboBoxDir.DataSource = Properties.Settings.Default.ScanDirectories;
 
 			_comboBoxDir.SelectedIndex = 0;
-		}
-
-		private void AddScanDirectory(string dir)
-		{
-			int index = Properties.Settings.Default.ScanDirectories.IndexOf(dir);
-			if (index >= 0)
-				Properties.Settings.Default.ScanDirectories.RemoveAt(index);
-
-			Properties.Settings.Default.ScanDirectories.Insert(0, dir);
-			while (Properties.Settings.Default.ScanDirectories.Count > 10)
-				Properties.Settings.Default.ScanDirectories.RemoveAt(10);
-
-			SaveSettings();
-		}
-
-		private void SaveSettings()
-		{
-			_timerSaveSettings.Stop();
-			_timerSaveSettings.Start();
 		}
 
 		private void TimerSaveSettings_Tick(object sender, EventArgs e)
@@ -305,8 +253,6 @@ namespace Replicants
 					break;
 			}
 		}
-
-		bool _allowedDigitKey;
 
 		private void OnlyNumbers_KeyDown(object sender, KeyEventArgs e)
 		{
