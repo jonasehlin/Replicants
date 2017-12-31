@@ -198,7 +198,7 @@
 			this._buttonScan.TabIndex = 6;
 			this._buttonScan.Text = "Scan";
 			this._buttonScan.UseVisualStyleBackColor = true;
-			this._buttonScan.Click += new System.EventHandler(this.ButtonAddDir_Click);
+			this._buttonScan.Click += new System.EventHandler(this.ButtonScan_Click);
 			// 
 			// _treeViewReplicants
 			// 
@@ -276,7 +276,7 @@
 			this._clearToolStripMenuItem.Name = "_clearToolStripMenuItem";
 			this._clearToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
 			this._clearToolStripMenuItem.Text = "Clear";
-			this._clearToolStripMenuItem.Click += new System.EventHandler(this.ButtonClear_Click);
+			this._clearToolStripMenuItem.Click += new System.EventHandler(this.Clear_Click);
 			// 
 			// _folderBrowserDialogAddDir
 			// 

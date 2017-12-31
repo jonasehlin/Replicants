@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualBasic.FileIO;
+using Replicants.Properties;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -19,13 +20,14 @@ namespace Replicants
 
 		private void AddScanDirectory(string dir)
 		{
-			int index = Properties.Settings.Default.ScanDirectories.IndexOf(dir);
+			var settings = Settings.Default;
+			int index = settings.ScanDirectories.IndexOf(dir);
 			if (index >= 0)
-				Properties.Settings.Default.ScanDirectories.RemoveAt(index);
+				settings.ScanDirectories.RemoveAt(index);
 
-			Properties.Settings.Default.ScanDirectories.Insert(0, dir);
-			while (Properties.Settings.Default.ScanDirectories.Count > 10)
-				Properties.Settings.Default.ScanDirectories.RemoveAt(10);
+			settings.ScanDirectories.Insert(0, dir);
+			while (settings.ScanDirectories.Count > 10)
+				settings.ScanDirectories.RemoveAt(10);
 
 			SaveSettings();
 		}
@@ -51,11 +53,11 @@ namespace Replicants
 		{
 			_comboBoxSearchPattern.SelectedIndex = 0;
 
-			_comboBoxDir.DataSource = Properties.Settings.Default.ScanDirectories;
-			_timerSaveSettings.Interval = Properties.Settings.Default.SaveSettingsInterval;
+			_comboBoxDir.DataSource = Settings.Default.ScanDirectories;
+			_timerSaveSettings.Interval = Settings.Default.SaveSettingsInterval;
 		}
 
-		private void ButtonAddDir_Click(object sender, EventArgs e)
+		private void ButtonScan_Click(object sender, EventArgs e)
 		{
 			if (_replicantFinder.IsBusy)
 			{
@@ -81,7 +83,7 @@ namespace Replicants
 			_replicantFinder.RunWorkerAsync(new ReplicantFinderArgs(_comboBoxDir.Text, _comboBoxSearchPattern.Text, _checkBoxNames.Checked));
 		}
 
-		private void ButtonClear_Click(object sender, EventArgs e)
+		private void Clear_Click(object sender, EventArgs e)
 		{
 			if (_replicantFinder.IsBusy)
 				return;
@@ -96,13 +98,13 @@ namespace Replicants
 			_treeViewReplicants.BeginUpdate();
 
 			var args = (ReplicantEventArgs)e.UserState;
-			var containerTreeNode = GetSourceTreeNode(args.Source);
 			var replicantTreeNode = new TreeNode()
 			{
 				Text = args.Replicant.Path,
 				Tag = args.Replicant
 			};
 
+			var containerTreeNode = GetSourceTreeNode(args.Source);
 			if (containerTreeNode == null)
 			{
 				containerTreeNode = new TreeNode()
@@ -162,7 +164,7 @@ namespace Replicants
 			AddScanDirectory(_folderBrowserDialogAddDir.SelectedPath);
 
 			_comboBoxDir.DataSource = null;
-			_comboBoxDir.DataSource = Properties.Settings.Default.ScanDirectories;
+			_comboBoxDir.DataSource = Settings.Default.ScanDirectories;
 
 			_comboBoxDir.SelectedIndex = 0;
 		}
@@ -171,12 +173,12 @@ namespace Replicants
 		{
 			_timerSaveSettings.Stop();
 
-			Properties.Settings.Default.Save();
+			Settings.Default.Save();
 		}
 
 		private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			Properties.Settings.Default.Save();
+			Settings.Default.Save();
 		}
 
 		private void ExpandAllToolStripMenuItem_Click(object sender, EventArgs e)
