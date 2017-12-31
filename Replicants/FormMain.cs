@@ -3,6 +3,7 @@ using Replicants.Properties;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Replicants
@@ -11,6 +12,7 @@ namespace Replicants
 	{
 		int _foundReplicants = 0;
 		bool _allowedDigitKey;
+		string _addDirectory = "<Click here to add directory...>";
 
 		public FormMain()
 		{
@@ -28,6 +30,8 @@ namespace Replicants
 			settings.ScanDirectories.Insert(0, dir);
 			while (settings.ScanDirectories.Count > 10)
 				settings.ScanDirectories.RemoveAt(10);
+
+			_listBoxDirectories.Items.Insert(0, dir);
 
 			SaveSettings();
 		}
@@ -52,9 +56,8 @@ namespace Replicants
 		private void FormMain_Load(object sender, EventArgs e)
 		{
 			_comboBoxSearchPattern.SelectedIndex = 0;
-
-			_comboBoxDir.DataSource = Settings.Default.ScanDirectories;
 			_timerSaveSettings.Interval = Settings.Default.SaveSettingsInterval;
+			_listBoxDirectories.Items.Add(_addDirectory);
 		}
 
 		private void ButtonScan_Click(object sender, EventArgs e)
@@ -73,14 +76,15 @@ namespace Replicants
 			_clearToolStripMenuItem.PerformClick();
 
 			_foundReplicants = 0;
-			AddScanDirectory(_comboBoxDir.Text);
 			_buttonScan.Text = "Stop";
 			Cursor = Cursors.AppStarting;
 			long value;
 			_replicantFinder._minSize = long.TryParse(_textBoxMinSize.Text, out value) ? (long?)value : null;
 			_replicantFinder._maxSize = long.TryParse(_textBoxMaxSize.Text, out value) ? (long?)value : null;
 			_replicantFinder.Replicants = _checkBoxNames.Checked ? new FileItemMap(new FileItem.NameComparer()) : new FileItemMap();
-			_replicantFinder.RunWorkerAsync(new ReplicantFinderArgs(_comboBoxDir.Text, _comboBoxSearchPattern.Text, _checkBoxNames.Checked));
+			var directories = _listBoxDirectories.Items.OfType<string>().Where(d => !ReferenceEquals(_addDirectory, d));
+			if (directories.Count() > 0)
+				_replicantFinder.RunWorkerAsync(new ReplicantFinderArgs(directories, _comboBoxSearchPattern.Text, _checkBoxNames.Checked));
 		}
 
 		private void Clear_Click(object sender, EventArgs e)
@@ -154,19 +158,6 @@ namespace Replicants
 		private void TreeViewReplicants_DoubleClick(object sender, EventArgs e)
 		{
 			_openToolStripMenuItem.PerformClick();
-		}
-
-		private void ButtonBrowseDir_Click(object sender, EventArgs e)
-		{
-			if (_folderBrowserDialogAddDir.ShowDialog() != DialogResult.OK)
-				return;
-
-			AddScanDirectory(_folderBrowserDialogAddDir.SelectedPath);
-
-			_comboBoxDir.DataSource = null;
-			_comboBoxDir.DataSource = Settings.Default.ScanDirectories;
-
-			_comboBoxDir.SelectedIndex = 0;
 		}
 
 		private void TimerSaveSettings_Tick(object sender, EventArgs e)
@@ -296,6 +287,41 @@ namespace Replicants
 			string cmd = "explorer.exe";
 			string args = string.Format("/select,\"{0}\"", fileItem.Path);
 			Process.Start(cmd, args);
+		}
+
+		private void ListBoxDirectories_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (!ReferenceEquals(_addDirectory, _listBoxDirectories.SelectedItem))
+				return;
+
+			if (_folderBrowserDialogAddDir.ShowDialog() != DialogResult.OK)
+				return;
+
+			AddScanDirectory(_folderBrowserDialogAddDir.SelectedPath);
+
+			_listBoxDirectories.SelectedIndex = -1;
+		}
+
+		private void ListBoxDirectories_KeyDown(object sender, KeyEventArgs e)
+		{
+			switch (e.KeyCode)
+			{
+				case Keys.Delete:
+					DeleteSelectedListBoxItem();
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		private void DeleteSelectedListBoxItem()
+		{
+			var selectedItem = _listBoxDirectories.SelectedItem;
+			if (selectedItem == null || ReferenceEquals(selectedItem, _addDirectory))
+				return;
+
+			_listBoxDirectories.Items.Remove(selectedItem);
 		}
 	}
 }

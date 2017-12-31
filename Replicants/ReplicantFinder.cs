@@ -30,32 +30,36 @@ namespace Replicants
 
 			try
 			{
-				foreach (var filePath in Directory.GetFiles(args.Path, args.SearchPattern))
+				foreach (var dir in args.Directories)
 				{
-					try
+					Trace.WriteLine($"Folder {dir}...");
+					foreach (var filePath in Directory.GetFiles(dir, args.SearchPattern))
 					{
-						var fileInfo = new FileInfo(filePath);
-						if (_minSize.HasValue && fileInfo.Length < _minSize.Value)
-							continue;
-						if (_maxSize.HasValue && fileInfo.Length > _maxSize.Value)
-							continue;
+						try
+						{
+							var fileInfo = new FileInfo(filePath);
+							if (_minSize.HasValue && fileInfo.Length < _minSize.Value)
+								continue;
+							if (_maxSize.HasValue && fileInfo.Length > _maxSize.Value)
+								continue;
 
-						var fileItem = new FileItem(fileInfo);
-						var source = Replicants.Add(fileItem);
-						if (source != null)
-							ReportProgress(0, new ReplicantEventArgs(source, fileItem));
+							var fileItem = new FileItem(fileInfo);
+							var source = Replicants.Add(fileItem);
+							if (source != null)
+								ReportProgress(0, new ReplicantEventArgs(source, fileItem));
 
-						if (CancellationPending)
-							return;
+							if (CancellationPending)
+								return;
+						}
+						catch (Exception ex)
+						{
+							Trace.WriteLine(ex.Message);
+						}
 					}
-					catch (Exception ex)
-					{
-						Trace.WriteLine(ex.Message);
-					}
+
+					foreach (var subDirPath in Directory.GetDirectories(dir))
+						FindReplicant(args.Clone(subDirPath));
 				}
-
-				foreach (var subDirPath in Directory.GetDirectories(args.Path))
-					FindReplicant(args.Clone(subDirPath));
 			}
 			catch (Exception ex)
 			{
